@@ -106,20 +106,18 @@ function createMaterial(size = 24) {
     uniform float u_size;
     uniform float u_aspect;
     varying float v_rotation;
-    varying float v_distance;
 
     void main(){
       gl_PointSize = u_size;
-
+      // 箭头的位置坐标
       vec4 mvPosition = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      // 箭头指向的位置坐标
       vec4 targetPos = projectionMatrix * modelViewMatrix * vec4(a_direction, 1.0);
 
       vec2 dir = targetPos.xy/targetPos.w -mvPosition.xy/mvPosition.w;
-      // dir.y = dir.y / u_aspect;
       float theta = atan(dir.y / u_aspect, dir.x);
 
       v_rotation =  theta; //  mod( theta + PI, 2.0 * PI );
-      v_distance = length(dir);
       gl_Position = mvPosition;
     }
   `;
@@ -128,7 +126,6 @@ function createMaterial(size = 24) {
     uniform float u_opacity;
     uniform sampler2D u_map;
     varying float v_rotation;
-    varying float v_distance;
 
     void main(){
 
